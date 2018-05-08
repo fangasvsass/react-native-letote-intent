@@ -47,7 +47,6 @@
 ```javascript
 import RNLetoteIntent from 'react-native-letote-intent';
 
-// TODO: What to do with the module?
-RNLetoteIntent;
+RNLetoteIntent.gotoPermissionSetting();
 ```
   
