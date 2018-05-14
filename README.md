@@ -48,5 +48,7 @@
 import RNLetoteIntent from 'react-native-letote-intent';
 
 RNLetoteIntent.gotoPermissionSetting();
+android only
+RNLetoteIntent.openActivity(String action);
 ```
   
