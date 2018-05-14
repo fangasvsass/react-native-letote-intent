@@ -92,6 +92,8 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
     } catch (Exception e) {
       e.printStackTrace();
       // 跳转失败, 前往普通设置界面
+      intent.setAction(Settings.ACTION_SETTINGS);
+      reactContext.startActivity(intent);
       success = false;
     }
     return success;
@@ -145,6 +147,11 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
     return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         .setData(Uri.parse("package:" + packageName))
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+  }
+  @ReactMethod
+  public void openActivity(String name){
+    Intent intent = new Intent(name);
+    reactContext.startActivity(intent);
   }
 
 }
