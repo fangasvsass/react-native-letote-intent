@@ -92,8 +92,9 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
     } catch (Exception e) {
       e.printStackTrace();
       // 跳转失败, 前往普通设置界面
-      intent.setAction(Settings.ACTION_SETTINGS);
-      reactContext.startActivity(intent);
+      Intent it=new Intent();
+      it.setAction(Settings.ACTION_SETTINGS);
+      reactContext.startActivity(it);
       success = false;
     }
     return success;
