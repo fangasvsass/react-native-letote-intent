@@ -5,7 +5,10 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
+import android.support.v4.app.NotificationManagerCompat;
 
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -153,6 +156,10 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
   public void openActivity(String name){
     Intent intent = new Intent(name);
     reactContext.startActivity(intent);
+  }
+  @ReactMethod
+  public void isAllowReceiveNotifiction(Promise promise){
+    promise.resolve(NotificationManagerCompat.from(this.reactContext).areNotificationsEnabled());
   }
 
 }
