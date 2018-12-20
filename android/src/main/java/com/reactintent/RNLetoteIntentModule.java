@@ -158,7 +158,7 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
     reactContext.startActivity(intent);
   }
   @ReactMethod
-  public void isAllowReceiveNotifiction(Promise promise){
+  public void isAllowReceiveNotification(Promise promise){
     promise.resolve(NotificationManagerCompat.from(this.reactContext).areNotificationsEnabled());
   }
 

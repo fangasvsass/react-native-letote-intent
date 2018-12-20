@@ -26,7 +26,7 @@ RCT_EXPORT_METHOD(gotoPermissionSetting) {
         }
     }
 }
-RCT_REMAP_METHOD(isAllowReceiveNotifiction,findEventsWithResolver:(RCTPromiseResolveBlock)resolve
+RCT_REMAP_METHOD(isAllowReceiveNotification,findEventsWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     if ([[[UIDevice currentDevice] systemVersion] doubleValue] >=10.0) { //iOS10以上包含iOS10
