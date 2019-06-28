@@ -36,53 +36,12 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String packageName = reactContext.getPackageName();
-
         OSUtils.ROM romType = OSUtils.getRomType();
         switch (romType) {
-            case EMUI: // 华为
-                intent.putExtra("packageName", packageName);
-                intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity"));
-                break;
             case Flyme: // 魅族
                 intent.setAction("com.meizu.safe.security.SHOW_APPSEC");
                 intent.addCategory(Intent.CATEGORY_DEFAULT);
                 intent.putExtra("packageName", packageName);
-                break;
-            case MIUI: // 小米
-                String rom = getMiuiVersion();
-                if ("V6".equals(rom) || "V7".equals(rom)) {
-                    intent.setAction("miui.intent.action.APP_PERM_EDITOR");
-                    intent.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-                    intent.putExtra("extra_pkgname", packageName);
-                } else if ("V8".equals(rom) || "V9".equals(rom)) {
-                    intent.setAction("miui.intent.action.APP_PERM_EDITOR");
-                    intent.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.PermissionsEditorActivity");
-                    intent.putExtra("extra_pkgname", packageName);
-                } else {
-                    intent = getAppDetailsSettingsIntent(packageName);
-                }
-                break;
-            case Sony: // 索尼
-                intent.putExtra("packageName", packageName);
-                intent.setComponent(new ComponentName("com.sonymobile.cta", "com.sonymobile.cta.SomcCTAMainActivity"));
-                break;
-            case ColorOS: // OPPO
-                intent.putExtra("packageName", packageName);
-                intent.setComponent(new ComponentName("com.coloros.safecenter", "com.coloros.safecenter.permission.PermissionManagerActivity"));
-                break;
-            case EUI: // 乐视
-                intent.putExtra("packageName", packageName);
-                intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.PermissionAndApps"));
-                break;
-            case LG: // LG
-                intent.setAction("android.intent.action.MAIN");
-                intent.putExtra("packageName", packageName);
-                ComponentName comp = new ComponentName("com.android.settings", "com.android.settings.Settings$AccessLockSummaryActivity");
-                intent.setComponent(comp);
-                break;
-            case SamSung: // 三星
-            case SmartisanOS: // 锤子
-                gotoAppDetailSetting(packageName, reactContext);
                 break;
             default:
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -93,12 +52,10 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
         try {
             reactContext.startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
             Intent it = new Intent();
-            it.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            Uri uri = Uri.fromParts("package", reactContext.getPackageName(), null);
-            it.setData(uri);
-            reactContext.startActivity(intent);
+            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            it.setAction(Settings.ACTION_SETTINGS);
+            reactContext.startActivity(it);
         }
     }
 
