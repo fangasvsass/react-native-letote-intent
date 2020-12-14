@@ -2,10 +2,16 @@
 package com.reactintent;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
-import android.support.v4.app.NotificationManagerCompat;
+import android.text.TextUtils;
+
+import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -128,5 +134,46 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
         reactContext.startActivity(intent);
 
     }
+
+    public String getChannelFromAPK() {
+        try {
+            PackageManager pm = reactContext.getPackageManager();
+            ApplicationInfo appInfo = pm.getApplicationInfo(reactContext.getPackageName(), PackageManager.GET_META_DATA);
+            if (appInfo.metaData != null) {
+                return appInfo.metaData.getString("BaiduMobAd_CHANNEL");
+            }
+            return null;
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return null;
+    }
+
+    public void setSpChannel() {
+        SharedPreferences sp = reactContext.
+                getSharedPreferences("BaiduMobAd_CHANNEL", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        String channel = getChannelFromAPK();
+        editor.putString("channel", channel);
+        editor.commit();
+    }
+
+    public String getSpChannel() {
+        SharedPreferences sp = reactContext.
+                getSharedPreferences("BaiduMobAd_CHANNEL", Context.MODE_PRIVATE);
+        String channel = sp.getString("channel", "");
+        return channel;
+    }
+
+    @ReactMethod
+    public void getChannel(Promise promise) {
+        String channel = getSpChannel();
+        if (TextUtils.isEmpty(channel)) {
+            setSpChannel();
+            channel = getSpChannel();
+        }
+        promise.resolve(channel);
+
+    }
+
 
 }
