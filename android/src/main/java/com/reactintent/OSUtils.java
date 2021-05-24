@@ -52,6 +52,8 @@ public class OSUtils {
   // OPPO : ColorOS
   private static final String KEY_COLOROS_VERSION = "ro.oppo.theme.version"; // "703"
   private static final String KEY_COLOROS_THEME_VERSION = "ro.oppo.version"; // ""
+  private static final String KEY_COLOROS_VERSION_V1 = "ro.oplus.theme.version"; // "703"
+  private static final String KEY_COLOROS_THEME_VERSION_V1  = "ro.oplus.version"; // ""
   private static final String KEY_COLOROS_ROM_VERSION = "ro.rom.different.version"; // "ColorOS2.1"
 
   private static final String VALUE_COLOROS_BASE_OS_VERSION_CONTAIN = "OPPO"; // "OPPO/R7sm/R7sm:5.1.1/LMY47V/1440928800:user/release-keys"
@@ -177,7 +179,7 @@ public class OSUtils {
           }
         }
       } else if (buildProperties.containsKey(KEY_COLOROS_VERSION) || buildProperties.containsKey(KEY_COLOROS_THEME_VERSION)
-          || buildProperties.containsKey(KEY_COLOROS_ROM_VERSION)) {
+          || buildProperties.containsKey(KEY_COLOROS_ROM_VERSION) || buildProperties.containsKey(KEY_COLOROS_THEME_VERSION_V1) || buildProperties.containsKey(KEY_COLOROS_VERSION_V1)) {
         // ColorOS
         rom = ROM.ColorOS;
         if (buildProperties.containsKey(KEY_COLOROS_ROM_VERSION)) {
