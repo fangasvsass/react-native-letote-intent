@@ -27,6 +27,8 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
+    public static String intentParams;
+
     public RNLetoteIntentModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
@@ -36,6 +38,19 @@ public class RNLetoteIntentModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "RNLetoteIntent";
     }
+
+    @ReactMethod
+    public void getDeepLinkParamsFromSensors(Callback callback) {
+
+        if(intentParams==null){
+            callback.invoke("");
+        }else{
+            callback.invoke(intentParams);
+        }
+
+        intentParams = null;
+    }
+
 
     @ReactMethod
     public void gotoPermissionSetting() {

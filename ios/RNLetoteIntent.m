@@ -2,15 +2,20 @@
 #import <UIKit/UIKit.h>
 #import <UserNotifications/UserNotifications.h>
 
+
 #define EXCEED_IOS_10 ([[[UIDevice currentDevice] systemVersion] floatValue]>= 10.0 ? YES : NO)
 
 @implementation RNLetoteIntent
+
 
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
 }
 RCT_EXPORT_MODULE()
+
+static NSString * paramString = nil;
+
 
 RCT_EXPORT_METHOD(gotoPermissionSetting) {
 //    NSURL * url= [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
@@ -50,6 +55,48 @@ RCT_REMAP_METHOD(isAllowReceiveNotification,findEventsWithResolver:(RCTPromiseRe
             resolve([[NSArray alloc] initWithObjects:@(1), nil]);
         }
     }
+}
+
+RCT_EXPORT_METHOD(getDeepLinkParamsFromSensors:(RCTResponseSenderBlock)callback) {
+
+    if(paramString == nil || paramString == NULL){
+        callback(@[@""]);
+    }else{
+        callback(@[paramString]);
+    }
+}
+
++ (void)didReceiveSensorsDeeplinkParam:(NSString *)param {
+    
+    paramString=param;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sensors_deeplink" object:nil];
+    
+}
+
+
+
+- (void)handleSend:(NSString *)params
+{
+    [self sendEventWithName:@"sensors_deeplink" body:paramString];
+    paramString=nil;
+}
+
+- (void)startObserving
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleSend:)
+                                                 name:@"sensors_deeplink"
+                                               object:nil];
+}
+
+- (void)stopObserving
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"sensors_deeplink"];
 }
 /*
  About — prefs:root=General&path=About

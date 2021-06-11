@@ -5,7 +5,11 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
-@interface RNLetoteIntent : NSObject <RCTBridgeModule>
+#import <React/RCTEventEmitter.h>
+
+@interface RNLetoteIntent : RCTEventEmitter <RCTBridgeModule>
+
++ (void)didReceiveSensorsDeeplinkParam:(NSString *)param;
 
 @end
   
